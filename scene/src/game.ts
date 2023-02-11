@@ -1,8 +1,11 @@
 import { getCurrentRealm } from '@decentraland/EnvironmentAPI'
 import { activate } from './switchMaterial'
+import { createTextEntity, SimpleMove } from './createText'
+import * as utils from '@dcl/ecs-scene-utils'
 
 let socket
-
+let parsed:any
+SimpleMove
 joinSocketsServer()
 
 export async function joinSocketsServer() {
@@ -11,20 +14,43 @@ export async function joinSocketsServer() {
   log(`You are in the realm: `, realm.displayName)
   // connect to ws server
   socket = new WebSocket(
-    'wss://64-225-45-232.nip.io/broadcast/' + realm.displayName
+    //'wss://64-225-45-232.nip.io/broadcast/' + realm.displayName
+    'ws://localhost:13370/broadcast/' + realm.displayName
   )
   // listen for incoming ws messages
   socket.onmessage = function (event) {
     try {
-      const parsed = JSON.parse(event.data)
+      //const parsed = JSON.parse(event.data)
+      parsed = JSON.parse(event.data)
       log(parsed)
+  //     const inputText = parsed.title
+  // const scale = 0.3
+  // createTextEntity(inputText, new Vector3(scale,scale,scale), Color3.Random(), 30)
       // activate cube referenced in message
-      activate(cubes[parsed.cube])
+      //activate(cubes[parsed.cube])
     } catch (error) {
       log(error)
     }
   }
+
+  //socket.send("Hello from Decentraland!")
+  
+  
 }
+
+const generateText = new Entity()
+generateText.addComponent(
+  new utils.Interval(1000, () => {
+    const scale = 0.3
+    
+    const inputText = parsed
+
+    createTextEntity(inputText, new Vector3(scale,scale,scale), Color3.Random(), 30)
+  })
+)
+
+// add entity to scene
+engine.addEntity(generateText)
 
 // list of all cubes
 let cubes: Entity[] = []
