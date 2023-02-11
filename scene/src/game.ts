@@ -43,7 +43,7 @@ generateText.addComponent(
   new utils.Interval(1000, () => {
     const scale = 0.3
     
-    const inputText = parsed
+    const inputText = parsed.title
 
     createTextEntity(inputText, new Vector3(scale,scale,scale), Color3.Random(), 30)
   })
