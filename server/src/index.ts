@@ -5,10 +5,7 @@ require('dotenv/config');
 // Access BEARER_TOKEN from process.env object
 const BEARER_TOKEN = process.env.BEARER_TOKEN;
 
-var Twitter = require('twitter');
-var client = new Twitter({
-    BEARER_TOKEN: process.env.BEARER_TOKEN,
-  });
+
 const endpointURL = "https://api.twitter.com/2/tweets/search/recent";
 
 async function getTweets() {
@@ -27,6 +24,7 @@ async function getTweets() {
       headers: {
           "User-Agent": "v2TweetLookupJS",
           "authorization": `Bearer ${BEARER_TOKEN}`
+         
       }
   })
 
@@ -61,6 +59,7 @@ wss.on("connection", async (clientWs, request) => {
     
       tweet = await getTweets();
       console.log(tweet)
+      tweet = JSON.stringify(tweet)
       cWs.send(tweet);
       
       
@@ -70,33 +69,7 @@ wss.on("connection", async (clientWs, request) => {
 
 
   ws.on("message", function incoming(data) {
-    // wss.clients.forEach(async function each(client) {
-    //   const cWs = client as customWs;
-  
-    //   if (cWs.readyState === WebSocket.OPEN && cWs.room === ws.room) {
-    //     cWs.send(data);
-    //   }
-      
-    //     tweet = await getTweets();
-    //     console.log(tweet)
-    //     cWs.send(tweet);
-        
-        
-        
-        
-    // });
-    // wss.clients.forEach(function each(client) {
-    //   const cWs = client as customWs;
-
-    //   // if (cWs.readyState === WebSocket.OPEN && cWs.room === ws.room) {
-    //   //   cWs.send(data);
-    //   // }
-    //   (async () => {
-    //     tweet = await getTweets();
-    //     cWs.send(tweet);
-        
-        
-    //     });
+    
     });
   });
 
@@ -106,25 +79,7 @@ wss.on("connection", async (clientWs, request) => {
 wss.once("listening", ()=>{
   
   console.log("Listening on port 13370")
-  
 
-
-
-  // wss.clients.forEach(async function each(client) {
-  //   const cWs = client as customWs;
-
-  //   // if (cWs.readyState === WebSocket.OPEN && cWs.room === ws.room) {
-  //   //   cWs.send(data);
-  //   // }
-    
-  //     tweet = await getTweets();
-  //     console.log(tweet)
-  //     cWs.send(tweet);
-      
-      
-      
-      
-  // });
 
 
   

@@ -39,13 +39,29 @@ export async function joinSocketsServer() {
 }
 
 const generateText = new Entity()
+let i =0
 generateText.addComponent(
+  
   new utils.Interval(1000, () => {
+    
     const scale = 0.3
     
-    const inputText = parsed.title
-
+    const inputText = parsed.data[i].text
     createTextEntity(inputText, new Vector3(scale,scale,scale), Color3.Random(), 30)
+    i=i+1
+    if(i>parsed.data.length-1){
+      i=0
+    }
+    log(i)
+    // for(var i=0; i<parsed.data.length; i++){
+    //   const inputText = parsed.data[i].text
+    //   createTextEntity(inputText, new Vector3(scale,scale,scale), Color3.Random(), 30)
+    // }
+    //const inputText = parsed.data[0].text
+    
+    //const inputText = 'input'
+
+    //createTextEntity(inputText, new Vector3(scale,scale,scale), Color3.Random(), 30)
   })
 )
 
